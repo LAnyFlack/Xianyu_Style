@@ -1,0 +1,40 @@
+<cu-custom bgColor="bg-gradual-green">
+  <view slot="content">校园小拍</view>
+</cu-custom>
+<view class="margin-xl padding-xl bg-white radius shadow shadow-lg">
+  <view class="flex justify-center">
+    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo" class='cu-btn round bg-green shadow'> 获取头像昵称 </button>
+    <block wx:else>
+      <view class='text-center'>
+        <view class="cu-avatar xl round solids" style="background-image:url({{userInfo.avatarUrl}})"></view>
+        <view class="padding">{{userInfo.nickName}}</view>
+      </view>
+    </block>
+  </view>
+</view>
+<view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
+    <view class="cu-item arrow">
+      <navigator class="content" url="/pages/Detail_Page1/Detail_Page1" hover-class="none">
+        <text class="cuIcon-myfill text-cyan"></text>
+        <text class="text-grey">出价者界面</text>
+      </navigator>
+    </view>
+    <view class="cu-item arrow">
+      <navigator class="content" url="/pages/Detail_Page2/Detail_Page2" hover-class="none">
+        <text class="cuIcon-myfill text-cyan"></text>
+        <text class="text-grey">竞拍者界面</text>
+      </navigator>
+    </view>
+     <view class="cu-item arrow">
+      <navigator class="content" url="/pages/Detail_Page3/Detail_Page3" hover-class="none">
+        <text class="cuIcon-myfill text-cyan"></text>
+        <text class="text-grey">拍卖者界面</text>
+      </navigator>
+    </view>
+     <view class="cu-item arrow">
+      <navigator class="content" url="/pages/Detail_Page4/Detail_Page4" hover-class="none">
+        <text class="cuIcon-myfill text-cyan"></text>
+        <text class="text-grey">中标者界面</text>
+      </navigator>
+    </view>
+  </view>

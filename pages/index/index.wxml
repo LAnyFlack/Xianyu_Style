@@ -37,4 +37,10 @@
         <text class="text-grey">中标者界面</text>
       </navigator>
     </view>
+     <view class="cu-item arrow">
+      <navigator class="content" url="/pages/Detail_Page5/Detail_Page5" hover-class="none">
+        <text class="cuIcon-myfill text-cyan"></text>
+        <text class="text-grey">最终的界面</text>
+      </navigator>
+    </view>
   </view>

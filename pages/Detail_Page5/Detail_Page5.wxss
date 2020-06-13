@@ -129,7 +129,6 @@
   position:fixed;
   bottom:0;
 }
-
 #fixed_buttom_bid{
   border-top: 8rpx solid  #f1f1f1;
   width: 100%;
@@ -139,4 +138,8 @@
 }
 #bid_button_changeshow{
   width: 100%;
+}
+
+#yourp{
+  border-bottom: 5rpx solid  #f1f1f1;
 }

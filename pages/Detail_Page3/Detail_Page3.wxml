@@ -112,5 +112,5 @@
   <button class="text-lg cu-btn round bg-white {{shadow?'shadow':''}}">
    <text class="padding-right-xs cuIcon-comment lg text-gray light"></text>留言
   </button>  
-  <button class="cu-btn round bg-green {{shadow?'shadow':''}}">管理</button>
+  <button  bindtap='changeShow' class="cu-btn round bg-green {{shadow?'shadow':''}}">管理</button>
 </view>

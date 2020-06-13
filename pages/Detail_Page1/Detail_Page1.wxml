@@ -108,9 +108,20 @@
 </view>
 
 
-<view id="fixed_buttom" class="bg-white padding-sm flex justify-between ">
+<view hidden="{{bid_show}}" id="fixed_buttom" class="bg-white padding-sm flex justify-between ">
   <button class="text-lg cu-btn round bg-white {{shadow?'shadow':''}}">
    <text class="padding-right-xs cuIcon-comment lg text-gray light"></text>留言
   </button>  
-  <button class="cu-btn round bg-green {{shadow?'shadow':''}}">出价</button>
+  <button  bindtap='changeShow' class="cu-btn round bg-green {{shadow?'shadow':''}}">出价</button>
+</view>
+
+<view hidden="{{!bid_show}}" id="fixed_buttom_bid" class="bg-white padding-lg padding-top-sm">
+  <view class="padding-xl flex justify-between algin-center">
+    <button bindtap='priceReduce' class="text-gray cu-btn icon text-xxl padding-lg">-</button>
+    <view class="cu-tag round bg-green light text-xxl padding-lg">{{user.user_new_price}}</view>
+    <button bindtap='priceAdd' class="text-gray cu-btn icon text-xxl padding-lg">+</button>
+  </view>
+  <view id="bid_button_changeshow" class="flex justify-center algin-center">
+    <button bindtap='changeShow' class="text-lg padding cu-btn round bg-green {{shadow?'shadow':''}}">出价</button>
+  </view>
 </view>

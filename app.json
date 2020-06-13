@@ -4,7 +4,8 @@
     "pages/Detail_Page1/Detail_Page1",
     "pages/Detail_Page2/Detail_Page2",
     "pages/Detail_Page3/Detail_Page3",
-    "pages/Detail_Page4/Detail_Page4"
+    "pages/Detail_Page4/Detail_Page4",
+    "pages/Detail_Page5/Detail_Page5"
   ],
   "window": {
     "backgroundTextStyle": "light",

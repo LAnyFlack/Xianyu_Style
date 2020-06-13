@@ -6,12 +6,14 @@ Page({
    * 页面的初始数据
    */
   data: {
+    bid_show: false,
     user:{
       name:'我是一个很厉害的用户名',
       user_info1:'我不知道我是登陆计时',
       user_info2:'还是别的什么东西',
       user_price:100,
-      user_url:'/images/head.png'
+      user_url:'/images/head.png',
+      user_new_price:99999//等于当前的商品价格
     },
     item:{
       current_price:99999,
@@ -82,6 +84,27 @@ Page({
     })
   },
 
+  changeShow:function(e){
+    this.setData({
+      bid_show: !this.data.bid_show
+    })
+  },
+  priceReduce:function(e){
+    var temp = this.data.user.user_new_price - 1;
+    var tempp = "user.user_new_price";
+    console.log(temp);
+    this.setData({
+      [tempp]: temp
+    })
+  },
+  priceAdd:function(e){
+    var temp = this.data.user.user_new_price + 1;
+    var tempp = "user.user_new_price";
+    console.log(temp);
+    this.setData({
+      [tempp]: temp
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

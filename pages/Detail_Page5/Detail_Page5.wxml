@@ -1,19 +1,23 @@
 <cu-custom bgColor="bg-gradual-green" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">校园小拍</view></cu-custom>
 
-<view wx:if="{{timeLeft != ''}}" class='text-grey text-center' id="count_down">
+<view wx:if="{{timeLeft != '' && user.user_role!='winner'}}" class='text-grey text-center' id="count_down">
   <text>距离拍卖结束：{{timeLeft}}</text>
+</view>
+
+<view wx:if="{{user.user_role=='winner'}}" class='text-grey text-center' id="count_down">
+  <text>距离拍卖结束：拍卖已结束</text>
 </view>
 
 
 <view id="user_info" class="bg_white flex solid-bottom padding align-center">
   <view id="user_info_img" class="justify-start basis-xs radius">
-    <image class="user_info_imgg" src="{{user.user_url}}"></image>
+    <image class="user_info_imgg" src="{{user.seller_url}}"></image>
   </view>
   <view id="user_info_text" class="align-center">
-    <text id="user_info_username">{{user.name}}</text>
+    <text id="user_info_username">{{user.seller_name}}</text>
 
-    <text class="user_info_dec">\n{{user.user_info1}}</text>
-    <text class="user_info_dec">{{user.user_info2}}</text>
+    <text class="user_info_dec">\n{{user.seller_info1}}</text>
+    <text class="user_info_dec">{{user.seller_info2}}</text>
   </view>
 </view>
 
@@ -21,18 +25,19 @@
   <view id="price">
     <text id="price_yuan" class="text-red text-lg">¥</text>
     <text id="price_num"  class="text-red text-xxl">{{item.current_price}}</text>
-    <text id="price_text" class="text-gray padding">当前价</text>
-  
-    <text id="price_yuan" class="text-red text-lg padding-left">¥</text>
-    <text id="price_num"  class="text-red text-xl padding-right-xs">{{user.user_price}}</text>
-    <text id="price_text" class="text-gray">你的出价</text>
+    <text wx:if="{{user.user_role !='winner'}}" id="price_text" class="text-gray padding">当前价</text>
+    <text wx:if="{{user.user_role =='winner'}}" id="price_text" class="text-gray padding">成交价</text>
+
+    <text wx:if="{{user.user_role=='buyer'}}" id="price_yuan" class="text-red text-lg padding-left">¥</text>
+    <text wx:if="{{user.user_role=='buyer'}}" id="price_num"  class="text-red text-xl padding-right-xs">{{user.user_price}}</text>
+    <text wx:if="{{user.user_role=='buyer'}}" id="price_text" class="text-gray">你的出价</text>
   </view>
   <view id="title" class="align-center flex">
     <view id="quality">
-      <view wx:if="{{quality=='brdnew'}}" class=" margin-xs flex-sub justify-start basis-xs cu-tag bg-red radius sm">全新</view>
-      <view wx:if="{{quality=='ninnew'}}" class=" margin-xs flex-sub justify-start basis-xs cu-tag bg-yellow radius sm">九新</view>
-      <view wx:if="{{quality=='notnew'}}" class=" margin-xs flex-sub justify-start basis-xs cu-tag bg-gray radius sm">磨损</view>
-      <view wx:if="{{quality==''}}" class=" margin-xs flex-sub justify-start basis-xs cu-tag bg-black radius sm">未知</view>
+      <view wx:if="{{item.item_quality=='brdnew'}}" class=" margin-xs flex-sub justify-start basis-xs cu-tag bg-red radius sm">全新</view>
+      <view wx:if="{{item.item_quality=='ninnew'}}" class=" margin-xs flex-sub justify-start basis-xs cu-tag bg-yellow radius sm">九新</view>
+      <view wx:if="{{item.item_quality=='notnew'}}" class=" margin-xs flex-sub justify-start basis-xs cu-tag bg-gray radius sm">磨损</view>
+      <view wx:if="{{item.item_quality==''}}" class=" margin-xs flex-sub justify-start basis-xs cu-tag bg-black radius sm">未知</view>
 
     </view>
       <view  class="justify-start text-xl margin-xs">
@@ -94,7 +99,7 @@
   </view>
 </view>
 
-<view id="comment" class="padding margin-bottom-xl bg-white align-center">
+<view wx:if="{{user.user_role!='winner'}}" id="comment" class="padding margin-bottom-xl bg-white align-center">
   <view id="comment_title" class="padding text-xl bolder text-gray align-center">
     <text>留言</text>
     <view id="comment_button" ><button class="text-lg cu-btn round bg-green">我要留言</button></view>
@@ -112,7 +117,26 @@
 </view>
 
 
-<view hidden="{{bid_show}}"  id="fixed_buttom" class="bg-white padding-sm flex justify-between align-center">
+<!-- visitor用户的底端栏 -->
+<view wx:if="{{user.user_role=='visitor'}}" hidden="{{bid_show}}" id="fixed_buttom" class="bg-white padding-sm flex justify-between ">
+  <button class="text-lg cu-btn round bg-white {{shadow?'shadow':''}}">
+   <text class="padding-right-xs cuIcon-comment lg text-gray light"></text>留言
+  </button>  
+  <button  bindtap='changeShow' class="cu-btn round bg-green {{shadow?'shadow':''}}">出价</button>
+</view>
+<view wx:if="{{user.user_role=='visitor'}}" hidden="{{!bid_show}}" id="fixed_buttom_bid" class="bg-white padding-lg padding-top-sm">
+  <view class="padding-xl flex justify-between algin-center">
+    <button bindtap='priceReduce' class="text-gray cu-btn icon text-xxl padding-lg">-</button>
+    <view class="cu-tag round bg-green light text-xxl padding-lg">{{user.user_new_price}}</view>
+    <button bindtap='priceAdd' class="text-gray cu-btn icon text-xxl padding-lg">+</button>
+  </view>
+  <view id="bid_button_changeshow" class="flex justify-center algin-center">
+    <button bindtap='changeShow' class="text-lg padding cu-btn round bg-green {{shadow?'shadow':''}}">出价</button>
+  </view>
+</view>
+
+<!-- buyer用户的底端栏 -->
+<view wx:if="{{user.user_role=='buyer'}}" hidden="{{bid_show}}"  id="fixed_buttom" class="bg-white padding-sm flex justify-between align-center">
   <button class="text-lg cu-btn round bg-white {{shadow?'shadow':''}}">
    <text class="padding-right-xs cuIcon-comment lg text-gray light"></text>留言
   </button>
@@ -124,8 +148,7 @@
     <button bindtap='changeShow' class="cu-btn round bg-green {{shadow?'shadow':''}}">继续出价</button>
   </view>  
 </view>
-
-<view hidden="{{!bid_show}}" id="fixed_buttom_bid" class="bg-white padding-lg padding-top-sm">
+<view wx:if="{{user.user_role=='buyer'}}" hidden="{{!bid_show}}" id="fixed_buttom_bid" class="bg-white padding-lg padding-top-sm">
   <view class="padding-xl flex justify-between algin-center">
     <button bindtap='priceReduce' class="text-gray cu-btn icon text-xxl padding-lg">-</button>
     <view class="cu-tag round bg-green light text-xxl padding-lg">{{user.user_new_price}}</view>
@@ -135,3 +158,30 @@
     <button bindtap='changeShow' class="text-lg padding cu-btn round bg-green {{shadow?'shadow':''}}">出价</button>
   </view>
 </view>
+
+<!-- seller用户的底端栏 -->
+<view wx:if="{{user.user_role=='seller'}}" id="fixed_buttom" class="bg-white padding-sm flex justify-between ">
+  <button class="text-lg cu-btn round bg-white {{shadow?'shadow':''}}">
+   <text class="padding-right-xs cuIcon-comment lg text-gray light"></text>留言
+  </button>  
+  <button  bindtap='changeShow' class="cu-btn round bg-green {{shadow?'shadow':''}}">管理</button>
+</view>
+
+<!-- winner用户的留言 -->
+<view wx:if="{{user.user_role=='winner'}}" id="comment" class="padding bg-white align-center">
+  <view id="comment_title" class="padding text-xl bolder text-gray align-center">
+    <text>留言</text>
+    <view id="comment_button" ><button class="text-lg cu-btn round bg-green">我要留言</button></view>
+  </view>
+  <view id="comments" class="padding text-lg text-gray" wx:for="{{commentList}}">
+        <view class="comment align-center">
+          <view id="comment_head" class="flex justify-start align-center">
+            <image class="user_info_imgg1 margin-xs" src="{{item.url}}"></image>
+            <view class="comment_text margin text-black">{{item.name}}</view>
+            <view wx:if="{{item.role=='seller'}}" class="text-lg margin-xs cu-tag bg-green light radius">卖家</view>
+          </view>
+          <view class="padding comment_text">{{item.text}}</view>
+        </view>
+  </view>
+</view>
+

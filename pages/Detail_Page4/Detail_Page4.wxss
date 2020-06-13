@@ -129,3 +129,14 @@
   position:fixed;
   bottom:0;
 }
+
+#fixed_buttom_bid{
+  border-top: 8rpx solid  #f1f1f1;
+  width: 100%;
+  position:fixed;
+  height:300rpx;
+  bottom:0;
+}
+#bid_button_changeshow{
+  width: 100%;
+}

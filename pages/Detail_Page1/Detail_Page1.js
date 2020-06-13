@@ -6,11 +6,36 @@ Page({
    * 页面的初始数据
    */
   data: {
-    userurl:'/images/head.png',
+    user:{
+      name:'我是一个很厉害的用户名',
+      user_info1:'我不知道我是登陆计时',
+      user_info2:'还是别的什么东西',
+      user_price:100,
+      user_url:'/images/head.png'
+    },
+    item:{
+      current_price:99999,
+      item_title:'我是拍卖品的题目，我觉得我这个题目很不错',
+      item_description:'我是一个很好看的拍卖品，有多么好看呢，有那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么好看！！！！！'
+    },
     commentList: [
-      { item_id: 1, name:'我是用户1号',text:'我好喜欢这个商品啊！！',url:'/images/head.png'}, 
-      { item_id: 2, name:'我是用户2号',text:'我不喜欢但是我我还是要评论',url:'/images/head.png'}, 
-      { item_id: 3, name:'我是用户3号',text:'我觉得不行，我也不知道我喜不喜欢',url:'/images/head.png'},
+      { item_id: 1, 
+        name:'我是用户1号',
+        text:'我好喜欢这个商品啊！！',
+        url:'/images/head.png',
+        role:'buyer'}, 
+
+      { item_id: 2, 
+        name:'我是用户2号',
+        text:'我不喜欢但是我我还是要评论',
+        url:'/images/head.png',
+        role:'seller'}, 
+
+      { item_id: 3, 
+        name:'我是用户3号',
+        text:'我觉得不行，我也不知道我喜不喜欢',
+        url:'/images/head.png',
+        role:'buyer'},
     ],
     bidList: [
       { item_id: 1, name:'我是用户1号',price:'100'}, { item_id: 2, name:'我是用户2号',price:'1000' }, { item_id: 3, name:'我是用户3号',price:'10000' },

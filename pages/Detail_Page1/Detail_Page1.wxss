@@ -112,8 +112,6 @@
   height: 80rpx;
 }
 .comment_text{
-  padding-bottom: 20rpx;
-  padding-top: 10rpx;
 }
 
 .comment{
@@ -123,4 +121,11 @@
 #comment_head{
   height: 100rpx;
   width: 100%;
+}
+
+#fixed_buttom{
+  border-top: 3rpx solid  #f1f1f1;
+  width: 100%;
+  position:fixed;
+  bottom:0;
 }

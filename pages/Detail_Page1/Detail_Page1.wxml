@@ -7,20 +7,20 @@
 
 <view id="user_info" class="bg_white flex solid-bottom padding align-center">
   <view id="user_info_img" class="justify-start basis-xs radius">
-    <image class="user_info_imgg" src="{{userurl}}"></image>
+    <image class="user_info_imgg" src="{{user.user_url}}"></image>
   </view>
   <view id="user_info_text" class="align-center">
-    <text id="user_info_username">我是一个很厉害的用户名</text>
+    <text id="user_info_username">{{user.name}}</text>
 
-    <text class="user_info_dec">\n我不知道我是登陆计时</text>
-    <text class="user_info_dec">还是别的什么东西</text>
+    <text class="user_info_dec">\n{{user.user_info1}}</text>
+    <text class="user_info_dec">{{user.user_info2}}</text>
   </view>
 </view>
 
 <view id="body" class="padding margin-bottom">
   <view id="price">
     <text id="price_yuan" class="text-red text-lg">¥</text>
-    <text id="price_num"  class="text-red text-xxl">99999</text>
+    <text id="price_num"  class="text-red text-xxl">{{item.current_price}}</text>
     <text id="price_text" class="text-gray padding">当前价</text>
   </view>
   <view id="title" class="align-center flex">
@@ -32,11 +32,11 @@
 
     </view>
       <view  class="justify-start text-xl margin-xs">
-        我是拍卖品的题目，我觉得我这个题目很不错
+        {{item.item_title}}
       </view>
   </view>
   <view id="description" class="align-center flex justify-start text-xl margin-xs">
-    我是一个很好看的拍卖品，有多么好看呢，有那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么好看！！！！！
+    {{item.item_description}}
   </view>
 
   <view id="tags" class="align-center flex justify-start margin-xs  flex flex-wrap">
@@ -59,7 +59,7 @@
       <text class="text-blue light">交易规则</text>
     </view>
     <view id="deal_num">
-      <text>交易规则</text>
+      <text class="text-gray">出价人数·{{bidList.length}}</text>
     </view>
   </view>
 </view>
@@ -90,7 +90,7 @@
   </view>
 </view>
 
-<view id="comment" class="padding margin-bottom bg-white align-center">
+<view id="comment" class="padding margin-bottom-xl bg-white align-center">
   <view id="comment_title" class="padding text-xl bolder text-gray align-center">
     <text>留言</text>
     <view id="comment_button" ><button class="text-lg cu-btn round bg-green">我要留言</button></view>
@@ -100,8 +100,17 @@
           <view id="comment_head" class="flex justify-start align-center">
             <image class="user_info_imgg1 margin-xs" src="{{item.url}}"></image>
             <view class="comment_text margin text-black">{{item.name}}</view>
+            <view wx:if="{{item.role=='seller'}}" class="text-lg margin-xs cu-tag bg-green light radius">卖家</view>
           </view>
-          <view class="comment_text">{{item.text}}</view>
+          <view class="padding comment_text">{{item.text}}</view>
         </view>
   </view>
+</view>
+
+
+<view id="fixed_buttom" class="bg-white padding-sm flex justify-between ">
+  <button class="text-lg cu-btn round bg-white {{shadow?'shadow':''}}">
+   <text class="padding-right-xs cuIcon-comment lg text-gray light"></text>留言
+  </button>  
+  <button class="cu-btn round bg-green {{shadow?'shadow':''}}">出价</button>
 </view>

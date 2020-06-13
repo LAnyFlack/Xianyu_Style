@@ -1,2 +1,116 @@
-<!--pages/Detail_Page3/Detail_Page3.wxml-->
-<text>pages/Detail_Page3/Detail_Page3.wxml</text>
+<cu-custom bgColor="bg-gradual-green" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">校园小拍</view></cu-custom>
+
+<view wx:if="{{timeLeft != ''}}" class='text-grey text-center' id="count_down">
+  <text>距离拍卖结束：{{timeLeft}}</text>
+</view>
+
+
+<view id="user_info" class="bg_white flex solid-bottom padding align-center">
+  <view id="user_info_img" class="justify-start basis-xs radius">
+    <image class="user_info_imgg" src="{{user.user_url}}"></image>
+  </view>
+  <view id="user_info_text" class="align-center">
+    <text id="user_info_username">{{user.name}}</text>
+
+    <text class="user_info_dec">\n{{user.user_info1}}</text>
+    <text class="user_info_dec">{{user.user_info2}}</text>
+  </view>
+</view>
+
+<view id="body" class="padding margin-bottom">
+  <view id="price">
+    <text id="price_yuan" class="text-red text-lg">¥</text>
+    <text id="price_num"  class="text-red text-xxl">{{item.current_price}}</text>
+    <text id="price_text" class="text-gray padding">当前价</text>
+  </view>
+  <view id="title" class="align-center flex">
+    <view id="quality">
+      <view wx:if="{{quality=='brdnew'}}" class=" margin-xs flex-sub justify-start basis-xs cu-tag bg-red radius sm">全新</view>
+      <view wx:if="{{quality=='ninnew'}}" class=" margin-xs flex-sub justify-start basis-xs cu-tag bg-yellow radius sm">九新</view>
+      <view wx:if="{{quality=='notnew'}}" class=" margin-xs flex-sub justify-start basis-xs cu-tag bg-gray radius sm">磨损</view>
+      <view wx:if="{{quality==''}}" class=" margin-xs flex-sub justify-start basis-xs cu-tag bg-black radius sm">未知</view>
+
+    </view>
+      <view  class="justify-start text-xl margin-xs">
+        {{item.item_title}}
+      </view>
+  </view>
+  <view id="description" class="align-center flex justify-start text-xl margin-xs">
+    {{item.item_description}}
+  </view>
+
+  <view id="tags" class="align-center flex justify-start margin-xs  flex flex-wrap">
+    <view class="tags padding-xs" wx:for="{{list}}" wx:key>
+      <view id="tag" class="padding text-lg cu-tag bg-blue light round">#{{item.title}}</view>
+    </view>
+  </view>
+  
+  <view id="pics" class="align-center flex flex-wrap">
+        <image class="radius2 margin-xs" style="width: {{imagewidth}}px; height: {{imageheight}}px;" src="{{item_image1}}" bindload="imageLoad"></image>
+        <image class="radius2 margin-xs" style="width: {{imagewidth}}px; height: {{imageheight}}px;" src="{{item_image2}}" bindload="imageLoad"></image>
+        <image class="radius2 margin-xs" style="width: {{imagewidth}}px; height: {{imageheight}}px;" src="{{item_image3}}" bindload="imageLoad"></image>
+        <image class="radius2 margin-xs" style="width: {{imagewidth}}px; height: {{imageheight}}px;" src="{{item_image4}}" bindload="imageLoad"></image>
+        <image class="radius2 margin-xs" style="width: {{imagewidth}}px; height: {{imageheight}}px;" src="{{item_image5}}" bindload="imageLoad"></image>
+  </view>
+  
+  <view class="body_bottom padding">
+    <view id="deal_rule">
+      <text class="padding-right-xs cuIcon-question lg text-blue light"></text>
+      <text class="text-blue light">交易规则</text>
+    </view>
+    <view id="deal_num">
+      <text class="text-gray">出价人数·{{bidList.length}}</text>
+    </view>
+  </view>
+</view>
+
+
+<view id="bid_rcd" class="padding margin-bottom bg-white">
+  <view id="br_title" class="padding text-xl bolder border-bottom margin-bottom">
+    <view class="li" data-index="0" bindtap='changeToggle'>
+      <view class="left text-gray">出价记录</view>
+      <view class="right">
+         <text class="cuIcon-pulldown text-gray"></text>
+      </view>
+    </view>
+    <view hidden="{{!selectedFlag[0]}}">
+      <block wx:for="{{bidList}}" wx:for-item="item" wx:for-index="index">
+        <view class="li">
+          <view>
+            <text class="text-blue">{{item.name}}</text>
+          </view>
+          <view>
+            <text class="text-gray">出价</text>
+            <text class="text-red">{{item.price}}</text>
+            <text class="text-gray">元</text>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>
+
+<view id="comment" class="padding margin-bottom-xl bg-white align-center">
+  <view id="comment_title" class="padding text-xl bolder text-gray align-center">
+    <text>留言</text>
+    <view id="comment_button" ><button class="text-lg cu-btn round bg-green">我要留言</button></view>
+  </view>
+  <view id="comments" class="padding text-lg text-gray" wx:for="{{commentList}}">
+        <view class="comment align-center">
+          <view id="comment_head" class="flex justify-start align-center">
+            <image class="user_info_imgg1 margin-xs" src="{{item.url}}"></image>
+            <view class="comment_text margin text-black">{{item.name}}</view>
+            <view wx:if="{{item.role=='seller'}}" class="text-lg margin-xs cu-tag bg-green light radius">卖家</view>
+          </view>
+          <view class="padding comment_text">{{item.text}}</view>
+        </view>
+  </view>
+</view>
+
+
+<view id="fixed_buttom" class="bg-white padding-sm flex justify-between ">
+  <button class="text-lg cu-btn round bg-white {{shadow?'shadow':''}}">
+   <text class="padding-right-xs cuIcon-comment lg text-gray light"></text>留言
+  </button>  
+  <button class="cu-btn round bg-green {{shadow?'shadow':''}}">管理</button>
+</view>

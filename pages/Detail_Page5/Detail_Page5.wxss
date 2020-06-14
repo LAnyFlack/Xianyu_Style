@@ -112,6 +112,8 @@
   height: 80rpx;
 }
 .comment_text{
+  text-overflow:ellipsis;
+  word-wrap:break-word;
 }
 
 .comment{
@@ -142,4 +144,19 @@
 
 #yourp{
   border-bottom: 5rpx solid  #f1f1f1;
+}
+
+#no_comment{
+  width: 440rpx;
+  height: 316rpx;
+}
+
+#fixed_buttom_comment{
+  border-top: 4rpx solid  #f1f1f1;
+  width: 100%;
+  position:fixed;
+  bottom:0;
+}
+.input{
+  width: 80%;
 }

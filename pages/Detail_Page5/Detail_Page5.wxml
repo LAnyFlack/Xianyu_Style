@@ -102,8 +102,25 @@
 <view wx:if="{{user.user_role!='winner'}}" id="comment" class="padding margin-bottom-xl bg-white align-center">
   <view id="comment_title" class="padding text-xl bolder text-gray align-center">
     <text>留言</text>
-    <view id="comment_button" ><button class="text-lg cu-btn round bg-green">我要留言</button></view>
+    <view id="comment_button" ><button bindtap='changeComment' class="text-lg cu-btn round bg-green">我要留言</button></view>
   </view>
+
+
+  <view wx:if="{{commentList.length==0}}" class="padding-lg" class="padding flex align-center justify-center">
+    <image id="no_comment" src="{{no_comment_url}}"></image>
+  </view>
+
+<view hidden="{{!new_comment_bool}}" id="comments_new" class="padding text-lg text-gray" wx:for="{{commentInput_list}}">
+        <view class="comment align-center" hidden = "">
+          <view id="comment_head" class="flex justify-start align-center">
+            <image class="user_info_imgg1 margin-xs" src="{{user.user_url}}"></image>
+            <view class="comment_text margin text-black">{{user.user_name}}</view>
+            <view wx:if="{{user.user_role=='seller'}}" class="text-lg margin-xs cu-tag bg-green light radius">卖家</view>
+          </view>
+          <view class="padding comment_text">{{item.text}}</view>
+        </view>
+  </view>
+
   <view id="comments" class="padding text-lg text-gray" wx:for="{{commentList}}">
         <view class="comment align-center">
           <view id="comment_head" class="flex justify-start align-center">
@@ -118,12 +135,13 @@
 
 
 <!-- visitor用户的底端栏 -->
-<view wx:if="{{user.user_role=='visitor'}}" hidden="{{bid_show}}" id="fixed_buttom" class="bg-white padding-sm flex justify-between ">
-  <button class="text-lg cu-btn round bg-white {{shadow?'shadow':''}}">
+<view wx:if="{{user.user_role=='visitor'}}" hidden="{{bid_show || comment_show}}" id="fixed_buttom" class="bg-white padding-sm flex justify-between ">
+  <button bindtap='changeComment' class="text-lg cu-btn round bg-white {{shadow?'shadow':''}}" >
    <text class="padding-right-xs cuIcon-comment lg text-gray light"></text>留言
   </button>  
-  <button  bindtap='changeShow' class="cu-btn round bg-green {{shadow?'shadow':''}}">出价</button>
+  <button bindtap='changeShow' class="cu-btn round bg-green {{shadow?'shadow':''}}">出价</button>
 </view>
+<!-- visitor出价界面 -->
 <view wx:if="{{user.user_role=='visitor'}}" hidden="{{!bid_show}}" id="fixed_buttom_bid" class="bg-white padding-lg padding-top-sm">
   <view class="padding-xl flex justify-between algin-center">
     <button bindtap='priceReduce' class="text-gray cu-btn icon text-xxl padding-lg">-</button>
@@ -131,13 +149,26 @@
     <button bindtap='priceAdd' class="text-gray cu-btn icon text-xxl padding-lg">+</button>
   </view>
   <view id="bid_button_changeshow" class="flex justify-center algin-center">
-    <button bindtap='changeShow' class="text-lg padding cu-btn round bg-green {{shadow?'shadow':''}}">出价</button>
+    <button bindtap='submitBid' class="margin-right text-lg padding cu-btn round bg-green {{shadow?'shadow':''}}">{{bid_text}}</button>
+    <button bindtap='changeShow' class="margin-left text-lg padding cu-btn round bg-green light {{shadow?'shadow':''}}">取消</button>
   </view>
 </view>
+<!-- <view wx:if="{{user.user_role=='visitor'}}" hidden="{{!bid_show}}" id="fixed_buttom_bid" class="bg-white padding-lg padding-top-sm">
+  <view class="padding-xl flex justify-between algin-center">
+    <button bindtap='priceReduce' class="text-gray cu-btn icon text-xxl padding-lg">-</button>
+    <view class="cu-tag round bg-green light text-xxl padding-lg">{{user.user_new_price}}</view>
+    <button bindtap='priceAdd' class="text-gray cu-btn icon text-xxl padding-lg">+</button>
+  </view>
+  <view id="bid_button_changeshow" class="flex justify-center algin-center">
+    <button bindtap='submitBid' class="text-lg padding cu-btn round bg-green {{shadow?'shadow':''}}">出价</button>
+  </view>
+</view> -->
+
+
 
 <!-- buyer用户的底端栏 -->
-<view wx:if="{{user.user_role=='buyer'}}" hidden="{{bid_show}}"  id="fixed_buttom" class="bg-white padding-sm flex justify-between align-center">
-  <button class="text-lg cu-btn round bg-white {{shadow?'shadow':''}}">
+<view wx:if="{{user.user_role=='buyer'}}" hidden="{{bid_show || comment_show}}"  id="fixed_buttom" class="bg-white padding-sm flex justify-between align-center">
+  <button bindtap='changeComment' class="text-lg cu-btn round bg-white {{shadow?'shadow':''}}">
    <text class="padding-right-xs cuIcon-comment lg text-gray light"></text>留言
   </button>
   <view class="flex justify-between align-center">
@@ -155,23 +186,29 @@
     <button bindtap='priceAdd' class="text-gray cu-btn icon text-xxl padding-lg">+</button>
   </view>
   <view id="bid_button_changeshow" class="flex justify-center algin-center">
-    <button bindtap='changeShow' class="text-lg padding cu-btn round bg-green {{shadow?'shadow':''}}">出价</button>
+    <button bindtap='submitBid' class="margin-right text-lg padding cu-btn round bg-green {{shadow?'shadow':''}}">{{bid_text}}</button>
+    <button bindtap='changeShow' class="margin-left text-lg padding cu-btn round bg-green light {{shadow?'shadow':''}}">取消</button>
   </view>
 </view>
 
 <!-- seller用户的底端栏 -->
 <view wx:if="{{user.user_role=='seller'}}" id="fixed_buttom" class="bg-white padding-sm flex justify-between ">
-  <button class="text-lg cu-btn round bg-white {{shadow?'shadow':''}}">
+  <button  bindtap='changeComment' class="text-lg cu-btn round bg-white {{shadow?'shadow':''}}">
    <text class="padding-right-xs cuIcon-comment lg text-gray light"></text>留言
   </button>  
   <button  bindtap='changeShow' class="cu-btn round bg-green {{shadow?'shadow':''}}">管理</button>
 </view>
 
 <!-- winner用户的留言 -->
+<!-- 解决margin问题 -->
 <view wx:if="{{user.user_role=='winner'}}" id="comment" class="padding bg-white align-center">
   <view id="comment_title" class="padding text-xl bolder text-gray align-center">
     <text>留言</text>
     <view id="comment_button" ><button class="text-lg cu-btn round bg-green">我要留言</button></view>
+  </view>
+
+  <view wx:if="{{commentList.length==0}}" class="padding-lg" class="padding flex align-center justify-center">
+    <image id="no_comment" src="{{no_comment_url}}"></image>
   </view>
   <view id="comments" class="padding text-lg text-gray" wx:for="{{commentList}}">
         <view class="comment align-center">
@@ -185,3 +222,9 @@
   </view>
 </view>
 
+
+<!-- 评论界面 -->
+<view hidden="{{!comment_show}}" id="fixed_buttom_comment" class="bg-white padding flex justify-between align-center">
+  <input class="input radius" placeholder="请输入评论内容..." bindinput="getComment" value="{{commentInput_set}}"/>
+  <button bindtap='submitComment' class="text-lg padding cu-btn round bg-green {{shadow?'shadow':''}}">{{comment_button_text}}</button>
+</view>

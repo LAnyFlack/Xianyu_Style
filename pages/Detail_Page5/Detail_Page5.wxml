@@ -117,7 +117,6 @@
     <view id="comment_button" ><button bindtap='changeComment' class="text-lg cu-btn round bg-green">我要留言</button></view>
   </view>
 
-
   <view wx:if="{{commentList.length==0}}" class="padding-lg" class="padding flex align-center justify-center">
     <image id="no_comment" src="{{no_comment_url}}"></image>
   </view>
@@ -137,10 +136,29 @@
         <view class="comment align-center">
           <view id="comment_head" class="flex justify-start align-center">
             <image class="user_info_imgg1 margin-xs" src="{{item.url}}"></image>
-            <view class="comment_text margin text-black">{{item.name}}</view>
+            <button  bindtap="openSubcomment_1" data-text="{{item.name}}" data-father="{{item.item_id}}" class="text-lg cu-btn padding-0 text-blue bg-white">{{item.name}}</button>
             <view wx:if="{{item.role=='seller'}}" class="text-lg margin-xs cu-tag bg-green light radius">卖家</view>
           </view>
           <view class="padding comment_text">{{item.text}}</view>
+
+          <view class="subcomment padding comment_text text-df" wx:for="{{item.sub_comments}}">
+            <view class="subcomment_title flex justify-start align-center">
+              <button bindtap="openSubcomment"  data-text="{{item.name}}" data-father="{{item.father}}" class="cu-btn padding-0 text-blue bg-white">{{item.name}}</button>
+              <text class="text-df padding-left-sm padding-right-sm">回复</text>
+              <button bindtap="openSubcomment" data-text="{{item.target}}" data-father="{{item.father}}" class="cu-btn padding-0 text-blue bg-white">{{item.target}}</button>
+            </view>
+            {{item.text}}
+          </view>
+          <view hidden="{{!new_subcomment_bool}}" wx:for="{{subcommentInput_list}}" wx:for-item="subfor">
+            <view hidden="{{subfor.father!=item.item_id}}" class="subcomment padding comment_text text-df" >
+              <view hidden="{{subfor.father!=item.item_id}}" class="subcomment_title flex justify-start align-center">
+                <button  hidden="{{subfor.father!=item.item_id}}" bindtap="openSubcomment"  data-text="{{user.user_name}}" data-father="{{subfor.father}}" class="cu-btn padding-0 text-blue bg-white">{{user.user_name}}</button>
+                <text  hidden="{{subfor.father!=item.item_id}}" class="text-df padding-left-sm padding-right-sm">回复</text>
+                <button  hidden="{{subfor.father!=item.item_id}}" bindtap="openSubcomment" data-text="{{subfor.target}}" data-father="{{subfor.father}}" class="cu-btn padding-0 text-blue bg-white">{{subfor.target}}</button>
+              </view>
+              <text hidden="{{subfor.father!=item.item_id}}">{{subfor.text}}</text>
+            </view>
+          </view> 
         </view>
   </view>
 </view>
@@ -237,6 +255,12 @@
 
 <!-- 评论界面 -->
 <view hidden="{{!comment_show}}" id="fixed_buttom_comment" class="bg-white padding flex justify-between align-center">
-  <input class="input radius" placeholder="请输入评论内容..." bindinput="getComment" value="{{commentInput_set}}"/>
+  <input class="input radius" placeholder="{{holder_text}}" bindinput="getComment" value="{{commentInput_set}}"/>
   <button bindtap='submitComment' class="text-lg padding cu-btn round bg-green {{shadow?'shadow':''}}">{{comment_button_text}}</button>
+</view>
+
+<!-- sub评论界面 -->
+<view hidden="{{!subcomment_show}}" id="fixed_buttom_comment" class="bg-white padding flex justify-between align-center">
+  <input class="input radius" placeholder="{{sub_holder_text}}" bindinput="getComment" value="{{commentInput_set}}"/>
+  <button bindtap='submitSubcomment' class="text-lg padding cu-btn round bg-green {{shadow?'shadow':''}}">{{comment_button_text}}</button>
 </view>

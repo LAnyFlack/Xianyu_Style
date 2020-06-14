@@ -4,6 +4,21 @@
 const util = require('../../utils/util.js')
 Page({
   data: {
+    subcomment_father: -1,
+    subcomment_target: '',
+    new_subcomment_bool: false,
+    subcomment_show: false,
+    subCommentcount: 0,
+    subcommentInput_list:[
+      { father:"",
+        text:"",
+        target:""
+      }
+  ],//----------
+
+
+    sub_holder_text: "",
+    holder_text: "请输入评论内容...",
     bid_text: "出价",
     bidCount: 0,
     min_bidAdd: 5,//最小的加价间隔,+++++++++
@@ -30,7 +45,7 @@ Page({
 
       user_name:'myUsername',
       user_url:'/images/head.png',//此账户用户的头像地址
-      user_role:'buyer',//==========
+      user_role:'visitor',//==========
       //此账户用户的身份，包含：“visitor”出价者、“buyer”竞拍者、“seller”拍卖者、“winner”中标者
       //会自动根据用户的身份来显示不同样式的页面
       user_price:100,//此账户用户的当前出价，==========
@@ -54,7 +69,27 @@ Page({
         name:'我是用户2号',
         text:'我不喜欢但是我我还是要评论',
         url:'/images/head.png',
-        role:'seller'}, 
+        role:'seller',
+        sub_comments:[
+          { name:'我是用户1号',
+            target:'我是用户2号',
+            text:'你是不是傻，不喜欢评论啥',
+            role:'buyer',
+            father:'2'},
+
+          { name:'我是用户3号',
+            target:'我是用户2号',
+            text:'卖家说自己不喜欢可还行',
+            role:'buyer',
+            father:'2'},
+
+          { name:'我是用户2号',
+            target:'我是用户1号',
+            text:'要你寡！要你寡！要你寡！要你寡！要你寡！要你寡！要你寡！要你寡！要你寡！要你寡！要你寡！要你寡！',
+            role:'seller',
+            father:'2'}
+        ]
+      }, 
       { item_id: 3, 
         name:'我是用户3号',
         text:'我觉得不行，我也不知道我喜不喜欢',
@@ -115,7 +150,37 @@ Page({
   },
   changeComment:function(e){//出价界面展开/收起切换函数
     this.setData({
+      holder_text: "请输入评论内容...",
       comment_show: !this.data.comment_show
+    })
+  },
+  openSubcomment:function(e){//出价界面展开/收起切换函数
+    var target = e.currentTarget.dataset.text;
+    var father = e.currentTarget.dataset.father;
+    console.log(target);
+    console.log(father);
+    this.setData({
+      sub_holder_text: "回复@"+target,
+      subcomment_father:father,
+      subcomment_target:target,
+      subcomment_show: true
+    })
+  },
+  openSubcomment_1:function(e){//点击主列表的用户名的出价界面展开/收起切换函数
+    var target = e.currentTarget.dataset.text;
+    var father = e.currentTarget.dataset.father;
+    console.log(target);
+    console.log(father);
+    this.setData({
+      sub_holder_text: "回复@"+target,
+      subcomment_father:father,
+      subcomment_target:target,
+      subcomment_show: true
+    })
+  },
+  closeSubcomment:function(e){
+    this.setData({
+      subcomment_show: false
     })
   },
   changeShow:function(e){//出价界面展开/收起切换函数
@@ -180,11 +245,39 @@ Page({
         new_comment_bool: true,
         [list]: input,
         commentInput_set: "",//把输入内的文字设置成空
-        commentInput: ""//把输入的值设置成空
+        commentInput: "",//把输入的值设置成空
+        comment_button_text: "取消"
       });
       console.log("list的是："+this.data.commentInput_list[count].text);
       this.setData({
         commentCount:count + 1
+      });
+    }
+  },
+  submitSubcomment:function(e){//用来提交用户输入的sub评论
+    console.log("输入的评论是："+this.data.commentInput);
+    this.closeSubcomment();
+    var input = this.data.commentInput;
+    var subcount = this.data.subCommentcount;
+    var list = "subcommentInput_list["+subcount+"]";//console.log(list);
+    if(input==null || input==''){//留言没有内容九判定为取消此次留言操作
+      console.log("没有留言内容，此次判定为取消");
+    }
+    else{
+      this.setData({
+        new_subcomment_bool: true,
+        [list]: {
+        father: this.data.subcomment_father,
+        text: input,
+        target: this.data.subcomment_target
+      },
+        commentInput_set: "",//把输入内的文字设置成空
+        commentInput: "",//把输入的值设置成空
+        comment_button_text: "取消"
+      });
+      console.log("sublist的是："+this.data.subcommentInput_list[subcount].text);
+      this.setData({
+        subCommentcount:subcount + 1
       });
     }
   },

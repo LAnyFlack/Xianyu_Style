@@ -68,7 +68,7 @@
       <text class="text-blue light">交易规则</text>
     </view>
     <view id="deal_num">
-      <text class="text-gray">出价人数·{{bidList.length}}</text>
+      <text class="text-gray">出价人次·{{bidList.length + newBidlist.length}}</text>
     </view>
   </view>
 </view>
@@ -169,7 +169,11 @@
   <button bindtap='changeComment' class="text-lg cu-btn round bg-white {{shadow?'shadow':''}}" >
    <text class="padding-right-xs cuIcon-comment lg text-gray light"></text>留言
   </button>  
-  <button bindtap='changeShow' class="cu-btn round bg-green {{shadow?'shadow':''}}">出价</button>
+  <view>
+     <button bindtap='buyoutShow' class="margin-right cu-btn round bg-yellow {{shadow?'shadow':''}}">一口价</button>
+     <button bindtap='changeShow' class="cu-btn round bg-green {{shadow?'shadow':''}}">出价</button>
+  </view>
+
 </view>
 <!-- visitor出价界面 -->
 <view wx:if="{{user.user_role=='visitor'}}" hidden="{{!bid_show}}" id="fixed_buttom_bid" class="bg-white padding-lg padding-top-sm">
@@ -183,18 +187,6 @@
     <button bindtap='changeShow' class="margin-left text-lg padding cu-btn round bg-green light {{shadow?'shadow':''}}">取消</button>
   </view>
 </view>
-<!-- <view wx:if="{{user.user_role=='visitor'}}" hidden="{{!bid_show}}" id="fixed_buttom_bid" class="bg-white padding-lg padding-top-sm">
-  <view class="padding-xl flex justify-between algin-center">
-    <button bindtap='priceReduce' class="text-gray cu-btn icon text-xxl padding-lg">-</button>
-    <view class="cu-tag round bg-green light text-xxl padding-lg">{{user.user_new_price}}</view>
-    <button bindtap='priceAdd' class="text-gray cu-btn icon text-xxl padding-lg">+</button>
-  </view>
-  <view id="bid_button_changeshow" class="flex justify-center algin-center">
-    <button bindtap='submitBid' class="text-lg padding cu-btn round bg-green {{shadow?'shadow':''}}">出价</button>
-  </view>
-</view> -->
-
-
 
 <!-- buyer用户的底端栏 -->
 <view wx:if="{{user.user_role=='buyer'}}" hidden="{{bid_show || comment_show}}"  id="fixed_buttom" class="bg-white padding-sm flex justify-between align-center">
@@ -206,7 +198,10 @@
       <view id="yourp" class="flex justify-center text-red text-bold">¥{{user.user_price}}</view>
       <view class="flex justify-center text-red text-bold">¥{{item.current_price}}</view>
     </view>
-    <button bindtap='changeShow' class="cu-btn round bg-green {{shadow?'shadow':''}}">继续出价</button>
+    <view>
+     <button bindtap='buyoutShow' class="margin-right cu-btn round bg-yellow {{shadow?'shadow':''}}">一口价</button>
+     <button bindtap='changeShow' class="cu-btn round bg-green {{shadow?'shadow':''}}">继续出价</button>
+    </view>
   </view>  
 </view>
 <view wx:if="{{user.user_role=='buyer'}}" hidden="{{!bid_show}}" id="fixed_buttom_bid" class="bg-white padding-lg padding-top-sm">
@@ -263,4 +258,14 @@
 <view hidden="{{!subcomment_show}}" id="fixed_buttom_comment" class="bg-white padding flex justify-between align-center">
   <input class="input radius" placeholder="{{sub_holder_text}}" bindinput="getComment" value="{{commentInput_set}}"/>
   <button bindtap='submitSubcomment' class="text-lg padding cu-btn round bg-green {{shadow?'shadow':''}}">{{comment_button_text}}</button>
+</view>
+
+<view hidden="{{!buyout_show}}" id="fixed_buttom_bid" class="bg-white padding-lg padding-top-sm">
+  <view class="padding-xl flex justify-center algin-center">
+    <view class="cu-tag round bg-green light text-xxl padding-lg">{{item.item_buyout_price}}</view>
+  </view>
+  <view id="bid_button_changeshow" class="flex justify-center algin-center">
+    <button bindtap='submitBuyout' class="margin-right text-lg padding cu-btn round bg-green {{shadow?'shadow':''}}">一口价</button>
+    <button bindtap='buyoutShow' class="margin-left text-lg padding cu-btn round bg-green light {{shadow?'shadow':''}}">取消</button>
+  </view>
 </view>

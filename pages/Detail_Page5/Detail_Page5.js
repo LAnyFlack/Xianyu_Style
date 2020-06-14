@@ -4,6 +4,8 @@
 const util = require('../../utils/util.js')
 Page({
   data: {
+    buyout_show: false,
+
     subcomment_father: -1,
     subcomment_target: '',
     new_subcomment_bool: false,
@@ -23,7 +25,11 @@ Page({
     bidCount: 0,
     min_bidAdd: 5,//最小的加价间隔,+++++++++
     newBidlist: [//新的，需要添加的出价记录列表，----------
-      { item_id: 1, name:'',price:''}
+    //   { 
+    //     // item_id: 1, 
+    //     // name:'',
+    //     // price:''
+    // }
     ],
     new_bid_bool:false,
 
@@ -56,8 +62,10 @@ Page({
       current_price:99999,//当前此商品的最高出价
       item_title:'我是拍卖品的题目，我觉得我这个题目很不错',//商品的标题
       item_quality:"ninnew",//商品的成色，包含：“brdnew”全新、“ninnew”九成新、“notnew”磨损、“NULL”未登记
-      item_description:'我是一个很好看的拍卖品，有多么好看呢，有那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么好看！！！！！'
+      item_description:'我是一个很好看的拍卖品，有多么好看呢，有那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么那么好看！！！！！',
       //商品的简介
+      item_buyout_price:15000,
+      item_status: "selling"//标记当前商品的拍卖状态，有selling正在拍卖和sold已拍卖
     },
     commentList: [//评论的相关信息，seller角色的用户会出现卖家的提示tag，+++++++++
       { item_id: 1, 
@@ -154,6 +162,12 @@ Page({
       comment_show: !this.data.comment_show
     })
   },
+  buyoutShow:function(e){
+    this.setData({
+      buyout_show: !this.data.buyout_show
+    })
+  }
+  ,
   openSubcomment:function(e){//出价界面展开/收起切换函数
     var target = e.currentTarget.dataset.text;
     var father = e.currentTarget.dataset.father;
@@ -325,6 +339,10 @@ Page({
         [bidCount_x]:bidCount+1,
       });
     }
+  },
+  submitBuyout:function(e){
+    console.log(this.data.user.user_name+"以一口价"+this.data.item.item_buyout_price+"买下了此商品");
+    this.buyoutShow();
   },
   onShow: function () {//处理倒计时的函数
     if(this.data.bool && this.data.datetimeTo !=""){

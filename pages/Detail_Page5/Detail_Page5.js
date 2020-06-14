@@ -4,11 +4,16 @@
 const util = require('../../utils/util.js')
 Page({
   data: {
+    bid_text: "出价",
+    bidCount: 0,
+    min_bidAdd: 5,//最小的加价间隔,+++++++++
+    newBidlist: [//新的，需要添加的出价记录列表，----------
+      { item_id: 1, name:'',price:''}
+    ],
+    new_bid_bool:false,
+
     comment_button_text: "取消",
     new_comment_bool: false,
-    bid_text: "出价",
-    min_bidAdd: 5,//最小的加价间隔,+++++++++
-
     commentInput: null,
     commentCount: 0,
     commentInput_list:[{text:""}],//----------
@@ -25,7 +30,7 @@ Page({
 
       user_name:'myUsername',
       user_url:'/images/head.png',//此账户用户的头像地址
-      user_role:'seller',//==========
+      user_role:'buyer',//==========
       //此账户用户的身份，包含：“visitor”出价者、“buyer”竞拍者、“seller”拍卖者、“winner”中标者
       //会自动根据用户的身份来显示不同样式的页面
       user_price:100,//此账户用户的当前出价，==========
@@ -191,6 +196,13 @@ Page({
     var current_price ="item.current_price";
     var user_role ="user.user_role";
     var new_role ="buyer";
+    var bidCount = this.data.bidCount;
+    var bidCount_x = "bidCount";
+    var list = "newBidlist["+bidCount+"]";
+    // var list_item_id = "newBidlist["+bidCount+"].item_id";
+    // var list_name = "newBidlist["+bidCount+"].name";
+    // var list_price = "newBidlist["+bidCount+"].price";
+    var user_name = this.data.user.user_name;
     if(new_price - old_price < this.data.min_bidAdd){
       this.setData({
         bid_text: "加价小于最小要求"
@@ -203,9 +215,22 @@ Page({
         [user_price]: new_price,
         [old_price_x]: new_price,
         [current_price]: new_price,
+        [list]: {
+          item_id:bidCount+1,
+          name: user_name,
+          price: new_price
+        },
+        // [list_item_id]:bidCount+1,
+        // [list_name]: user_name,
+        // [list_price]: new_price,
+        new_bid_bool:true,
         bid_text: "出价"
       });
+      console.log("bidlist："+this.data.newBidlist[bidCount].price);
       console.log("新："+this.data.user.user_new_price+"旧："+this.data.user.user_old_price);
+      this.setData({
+        [bidCount_x]:bidCount+1,
+      });
     }
   },
   onShow: function () {//处理倒计时的函数

@@ -95,6 +95,18 @@
           </view>
         </view>
       </block>
+      <block hidden="{{!new_bid_bool}}" wx:for="{{newBidlist}}" wx:for-item="item" wx:for-index="index">
+        <view hidden="{{!new_bid_bool}}" class="li">
+          <view>
+            <text class="text-blue">{{item.name}}</text>
+          </view>
+          <view hidden="{{!new_bid_bool}}">
+            <text class="text-gray">出价</text>
+            <text class="text-red">{{item.price}}</text>
+            <text class="text-gray">元</text>
+          </view>
+        </view>
+      </block>
     </view>
   </view>
 </view>

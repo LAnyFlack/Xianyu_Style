@@ -162,7 +162,7 @@ Page({
       comment_show: !this.data.comment_show
     })
   },
-  buyoutShow:function(e){
+  buyoutShow:function(e){//显示/收起一口价的出价界面的函数
     this.setData({
       buyout_show: !this.data.buyout_show
     })
@@ -192,7 +192,7 @@ Page({
       subcomment_show: true
     })
   },
-  closeSubcomment:function(e){
+  closeSubcomment:function(e){//关闭sub评论的评论界面的函数
     this.setData({
       subcomment_show: false
     })
@@ -295,7 +295,7 @@ Page({
       });
     }
   },
-  submitBid:function(e){
+  submitBid:function(e){//提交新的出价的函数
     var new_price = this.data.user.user_new_price;
     var old_price = this.data.user.user_old_price;
     var old_price_x = "user.user_old_price";
@@ -340,7 +340,7 @@ Page({
       });
     }
   },
-  submitBuyout:function(e){
+  submitBuyout:function(e){//确认一口价购买的函数
     console.log(this.data.user.user_name+"以一口价"+this.data.item.item_buyout_price+"买下了此商品");
     this.buyoutShow();
   },

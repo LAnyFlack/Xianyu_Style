@@ -1,59 +1,75 @@
+<!-- 页面最上面的标题栏，使用colorui的内置绿色标题栏 -->
 <cu-custom bgColor="bg-gradual-green" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">校园小拍</view></cu-custom>
 
+
+<!-- 关于拍卖倒计时的展示组件，判断当前用户的身份是不是中标者，若是中标者直接显示拍卖已结束；
+     判断剩余时间是不是置空，是则不显示倒计时，表示此拍卖长期有效；以上均不满足则输出剩余时间-->
 <view wx:if="{{timeLeft != '' && user.user_role!='winner'}}" class='text-grey text-center' id="count_down">
   <text>距离拍卖结束：{{timeLeft}}</text>
 </view>
-
 <view wx:if="{{user.user_role=='winner'}}" class='text-grey text-center' id="count_down">
   <text>距离拍卖结束：拍卖已结束</text>
 </view>
 
-
+<!-- 用户信息部分，用户的信息存在js.data中的user数组中 -->
 <view id="user_info" class="bg_white flex solid-bottom padding align-center">
   <view id="user_info_img" class="justify-start basis-xs radius">
     <image class="user_info_imgg" src="{{user.seller_url}}"></image>
   </view>
   <view id="user_info_text" class="align-center">
     <text id="user_info_username">{{user.seller_name}}</text>
-
     <text class="user_info_dec">\n{{user.seller_info1}}</text>
     <text class="user_info_dec">{{user.seller_info2}}</text>
   </view>
 </view>
 
+
+<!-- 商品主体信息部分 -->
 <view id="body" class="padding margin-bottom">
   <view id="price">
     <text id="price_yuan" class="text-red text-lg">¥</text>
     <text id="price_num"  class="text-red text-xxl">{{item.current_price}}</text>
+   
+    <!-- 如果是中标者则显示成交价，否则都显示当前价 -->
     <text wx:if="{{user.user_role !='winner'}}" id="price_text" class="text-gray padding">当前价</text>
     <text wx:if="{{user.user_role =='winner'}}" id="price_text" class="text-gray padding">成交价</text>
-
+    
+    <!-- 如果是竞拍者则还会额外显示用户当前的出价 -->
     <text wx:if="{{user.user_role=='buyer'}}" id="price_yuan" class="text-red text-lg padding-left">¥</text>
     <text wx:if="{{user.user_role=='buyer'}}" id="price_num"  class="text-red text-xl padding-right-xs">{{user.user_price}}</text>
     <text wx:if="{{user.user_role=='buyer'}}" id="price_text" class="text-gray">你的出价</text>
   </view>
+
+  <!-- 商品的标题，用拍卖者给出 -->
   <view id="title" class="align-center flex">
+  
+    <!-- 商品的品级，有4等由item.item_quality字段定义，详情可见js文档备注 -->
     <view id="quality">
       <view wx:if="{{item.item_quality=='brdnew'}}" class=" margin-xs flex-sub justify-start basis-xs cu-tag bg-red radius sm">全新</view>
       <view wx:if="{{item.item_quality=='ninnew'}}" class=" margin-xs flex-sub justify-start basis-xs cu-tag bg-yellow radius sm">九新</view>
       <view wx:if="{{item.item_quality=='notnew'}}" class=" margin-xs flex-sub justify-start basis-xs cu-tag bg-gray radius sm">磨损</view>
       <view wx:if="{{item.item_quality==''}}" class=" margin-xs flex-sub justify-start basis-xs cu-tag bg-black radius sm">未知</view>
-
     </view>
-      <view  class="justify-start text-xl margin-xs">
-        {{item.item_title}}
-      </view>
+
+    <!-- 商品的标题 -->
+    <view  class="justify-start text-xl margin-xs">
+      {{item.item_title}}
+    </view>
   </view>
+
+  <!-- 商品的描述 -->
   <view id="description" class="align-center flex justify-start text-xl margin-xs">
     {{item.item_description}}
   </view>
 
+  <!-- 商品的标签 -->
   <view id="tags" class="align-center flex justify-start margin-xs  flex flex-wrap">
     <view class="tags padding-xs" wx:for="{{list}}" wx:key>
       <view id="tag" class="padding text-lg cu-tag bg-blue light round">#{{item.title}}</view>
     </view>
   </view>
   
+  <!-- 商品的预览图片 -->
   <view id="pics" class="align-center flex flex-wrap">
         <image class="radius2 margin-xs" style="width: {{imagewidth}}px; height: {{imageheight}}px;" src="{{item_image1}}" bindload="imageLoad"></image>
         <image class="radius2 margin-xs" style="width: {{imagewidth}}px; height: {{imageheight}}px;" src="{{item_image2}}" bindload="imageLoad"></image>
@@ -62,6 +78,7 @@
         <image class="radius2 margin-xs" style="width: {{imagewidth}}px; height: {{imageheight}}px;" src="{{item_image5}}" bindload="imageLoad"></image>
   </view>
   
+  <!-- body的底端文字部分 -->
   <view class="body_bottom padding">
     <view id="deal_rule">
       <text class="padding-right-xs cuIcon-question lg text-blue light"></text>
@@ -73,7 +90,7 @@
   </view>
 </view>
 
-
+<!-- 出价记录 -->
 <view id="bid_rcd" class="padding margin-bottom bg-white">
   <view id="br_title" class="padding text-xl bolder border-bottom margin-bottom">
     <view class="li" data-index="0" bindtap='changeToggle'>
@@ -95,6 +112,8 @@
           </view>
         </view>
       </block>
+
+      <!-- 如果有新的出价则给出可视化表示「*」 -->
       <block hidden="{{!new_bid_bool}}" wx:for="{{newBidlist}}" wx:for-item="item" wx:for-index="index">
         <view hidden="{{!new_bid_bool}}" class="li">
           <view>
@@ -111,17 +130,21 @@
   </view>
 </view>
 
+<!-- 评论，当用户为中标者即拍卖已结束时不显示，因为没有了出价的需求所以没有底端栏了，
+     这个和winner的区分开来只是为了不同的margin-bottom                       -->
 <view wx:if="{{user.user_role!='winner'}}" id="comment" class="padding margin-bottom-xl bg-white align-center">
   <view id="comment_title" class="padding text-xl bolder text-gray align-center">
     <text>留言</text>
     <view id="comment_button" ><button bindtap='changeComment' class="text-lg cu-btn round bg-green">我要留言</button></view>
   </view>
 
+  <!-- 如果没有评论显示无评论的提示图片 -->
   <view wx:if="{{commentList.length==0}}" class="padding-lg" class="padding flex align-center justify-center">
     <image id="no_comment" src="{{no_comment_url}}"></image>
   </view>
 
-<view hidden="{{!new_comment_bool}}" id="comments_new" class="padding text-lg text-gray" wx:for="{{commentInput_list}}">
+  <!-- 有新评论时显示，与新出价显示「*」的类似 -->
+  <view hidden="{{!new_comment_bool}}" id="comments_new" class="padding text-lg text-gray" wx:for="{{commentInput_list}}">
         <view class="comment align-center" hidden = "">
           <view id="comment_head" class="flex justify-start align-center">
             <image class="user_info_imgg1 margin-xs" src="{{user.user_url}}"></image>
@@ -132,6 +155,8 @@
         </view>
   </view>
 
+
+  <!-- 评论的显示 -->
   <view id="comments" class="padding text-lg text-gray" wx:for="{{commentList}}">
         <view class="comment align-center">
           <view id="comment_head" class="flex justify-start align-center">
@@ -141,6 +166,7 @@
           </view>
           <view class="padding comment_text">{{item.text}}</view>
 
+          <!-- sub评论的显示 -->
           <view class="subcomment padding comment_text text-df" wx:for="{{item.sub_comments}}">
             <view class="subcomment_title flex justify-start align-center">
               <button bindtap="openSubcomment"  data-text="{{item.name}}" data-father="{{item.father}}" class="cu-btn padding-0 text-blue bg-white">{{item.name}}</button>
@@ -149,6 +175,8 @@
             </view>
             {{item.text}}
           </view>
+
+          <!-- 新sub评论的显示 -->
           <view hidden="{{!new_subcomment_bool}}" wx:for="{{subcommentInput_list}}" wx:for-item="subfor">
             <view hidden="{{subfor.father!=item.item_id}}" class="subcomment padding comment_text text-df" >
               <view hidden="{{subfor.father!=item.item_id}}" class="subcomment_title flex justify-start align-center">
@@ -173,7 +201,6 @@
      <button bindtap='buyoutShow' class="margin-right cu-btn round bg-yellow {{shadow?'shadow':''}}">一口价</button>
      <button bindtap='changeShow' class="cu-btn round bg-green {{shadow?'shadow':''}}">出价</button>
   </view>
-
 </view>
 <!-- visitor出价界面 -->
 <view wx:if="{{user.user_role=='visitor'}}" hidden="{{!bid_show}}" id="fixed_buttom_bid" class="bg-white padding-lg padding-top-sm">
@@ -260,6 +287,7 @@
   <button bindtap='submitSubcomment' class="text-lg padding cu-btn round bg-green {{shadow?'shadow':''}}">{{comment_button_text}}</button>
 </view>
 
+<!-- 一口价相关，暂时不需要关注这部分 -->
 <view hidden="{{!buyout_show}}" id="fixed_buttom_bid" class="bg-white padding-lg padding-top-sm">
   <view class="padding-xl flex justify-center algin-center">
     <view class="cu-tag round bg-green light text-xxl padding-lg">{{item.item_buyout_price}}</view>

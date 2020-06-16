@@ -7,6 +7,14 @@
   height: 80rpx;
   background-color: red;
 }
+#count_down_pre{
+  padding:20rpx;
+  color:white;
+  font-size: 30rpx;
+  width:750rpx;
+  height: 80rpx;
+  background-color: greenyellow;
+}
 
 #user_info,#body,#title,#description,#tags,#pics{
   background-color: white;
@@ -168,4 +176,12 @@
 }
 .subcomment_title{
 
+}
+
+.comment_time{
+  text-align: end;
+}
+
+.comment_time_sub{
+  text-align: end;
 }

@@ -2,9 +2,11 @@
 //需要从后端获取的用+++++++++表示
 //需要更新后端数据的用----------表示
 const util = require('../../utils/util.js')
+const Time = require('../../utils/time.js')
 Page({
   data: {
     buyout_show: false,
+    time_now: '',
 
     subcomment_father: -1,
     subcomment_target: '',
@@ -37,7 +39,10 @@ Page({
     new_comment_bool: false,
     commentInput: null,
     commentCount: 0,
-    commentInput_list:[{text:""}],//----------
+    commentInput_list:[{
+      text:"",
+      time:""
+    }],//----------
     commentInput_set: null,
 
     bid_show: false,
@@ -56,7 +61,8 @@ Page({
       //会自动根据用户的身份来显示不同样式的页面
       user_price:100,//此账户用户的当前出价，==========
       user_old_price:99999,//此账户用户的原本的出价，==========
-      user_new_price:99999//此账户用户的新的出价，==========
+      user_new_price:99999,//此账户用户的新的出价，==========
+      user_phone:''
     },
     item:{//包含了此商品的基本信息，+++++++++，----------
       current_price:99999,//当前此商品的最高出价
@@ -72,37 +78,49 @@ Page({
         name:'我是用户1号',
         text:'我好喜欢这个商品啊！！',
         url:'/images/head.png',
-        role:'buyer'}, 
+        role:'buyer',
+        time:'2010-08-01 10:30:00',
+        sub_comments:[]
+      }, 
       { item_id: 2, 
         name:'我是用户2号',
         text:'我不喜欢但是我我还是要评论',
         url:'/images/head.png',
         role:'seller',
+        time:'2010-08-01 10:30:00',
         sub_comments:[
           { name:'我是用户1号',
             target:'我是用户2号',
             text:'你是不是傻，不喜欢评论啥',
             role:'buyer',
-            father:'2'},
+            father:'2',
+            time:'2010-08-01 10:30:00'
+          },
 
           { name:'我是用户3号',
             target:'我是用户2号',
             text:'卖家说自己不喜欢可还行',
             role:'buyer',
-            father:'2'},
+            father:'2',
+            time:'2010-08-01 10:30:00'
+          },
 
           { name:'我是用户2号',
             target:'我是用户1号',
             text:'要你寡！要你寡！要你寡！要你寡！要你寡！要你寡！要你寡！要你寡！要你寡！要你寡！要你寡！要你寡！',
             role:'seller',
-            father:'2'}
+            father:'2',
+            time:'2010-08-01 10:30:00'
+          }
         ]
       }, 
       { item_id: 3, 
         name:'我是用户3号',
         text:'我觉得不行，我也不知道我喜不喜欢',
         url:'/images/head.png',
-        role:'buyer'}
+        role:'buyer',
+        time:'2010-08-01 10:30:00',
+        sub_comments:[]}
     ],
     bidList: [//出价记录列表，+++++++++，----------
       { item_id: 1, name:'我是用户1号',price:'100'}, 
@@ -248,9 +266,12 @@ Page({
     //器加一，移动到数组的下一个位置
     console.log("输入的评论是："+this.data.commentInput);
     this.changeComment();
+    // this.formatTime1();
+    var time = Time.formatTime(new Date());
     var input = this.data.commentInput;
     var count = this.data.commentCount;
     var list = "commentInput_list["+count+"].text";//console.log(list);
+    var list_time = "commentInput_list["+count+"].time";//console.log(list);
     if(input==null || input==''){//留言没有内容九判定为取消此次留言操作
       console.log("没有留言内容，此次判定为取消");
     }
@@ -258,6 +279,7 @@ Page({
       this.setData({
         new_comment_bool: true,
         [list]: input,
+        [list_time]: time,
         commentInput_set: "",//把输入内的文字设置成空
         commentInput: "",//把输入的值设置成空
         comment_button_text: "取消"
@@ -271,6 +293,7 @@ Page({
   submitSubcomment:function(e){//用来提交用户输入的sub评论
     console.log("输入的评论是："+this.data.commentInput);
     this.closeSubcomment();
+    var time = Time.formatTime(new Date());
     var input = this.data.commentInput;
     var subcount = this.data.subCommentcount;
     var list = "subcommentInput_list["+subcount+"]";//console.log(list);
@@ -283,7 +306,8 @@ Page({
         [list]: {
         father: this.data.subcomment_father,
         text: input,
-        target: this.data.subcomment_target
+        target: this.data.subcomment_target,
+        time: time
       },
         commentInput_set: "",//把输入内的文字设置成空
         commentInput: "",//把输入的值设置成空

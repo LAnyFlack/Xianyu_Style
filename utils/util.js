@@ -5,8 +5,21 @@ const formatTime = date => {
   const hour = date.getHours()
   const minute = date.getMinutes()
   const second = date.getSeconds()
+  var time1 = ''
 
   return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
+}
+
+function formatTime1() {
+  var date=new Date();
+  let year = date.getFullYear();
+  let month = date.getMonth() + 1;
+  let day = date.getDate();
+  let hour = date.getHours();
+  let minute = date.getMinutes();
+  let second = date.getSeconds();
+
+  return [year, month, day].map(this.formatNumber).join('-') + ' ' + [hour, minute, second].map(this.formatNumber).join(':');
 }
 
 const formatNumber = n => {
@@ -15,7 +28,8 @@ const formatNumber = n => {
 }
 
 module.exports = {
-  formatTime: formatTime
+  formatTime: formatTime,
+  formatTime1: formatTime1
 }
 
 //取倒计时（天时分秒）
@@ -32,6 +46,12 @@ function getTimeLeft(datetimeTo){
   let seconds = parseInt((mss % (1000 * 60)) / 1000);
    
   return days + "天" + hours + "时" + minutes + "分" + seconds + "秒"
+}
+
+function getTimeTime1(){
+  // 获取当前时间
+  let time1 = new Date().getTime();
+  return time1;
 }
  
 function imageUtil(e) {
@@ -70,8 +90,3 @@ module.exports = {
   getTimeLeft: getTimeLeft,
   imageUtil: imageUtil
 }
-
-
-
-
-
